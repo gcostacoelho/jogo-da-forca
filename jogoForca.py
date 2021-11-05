@@ -1,5 +1,11 @@
+from os import system as sy
+from colorama import init
+from colorama import Fore as cor 
+
+init(autoreset=True)
+
 def palavraSec():
-    palavraSec = input('Digite a palavra secreta: ').lower()
+    palavraSec = input(cor.BLUE + 'Digite a palavra secreta: ').lower()
     palavraSecList = list(palavraSec)
     return palavraSecList
 
@@ -22,31 +28,36 @@ def comparaPalavra(str1, str2):
     if str2 == str1: return True
     else: return False
 
-erro = 7
-palavra = palavraSec()
-palavraEsc = ocultarPalavra(palavra)
+while True:
+    sy('clear')
+    erro = 7
+    palavra = palavraSec()
+    palavraEsc = ocultarPalavra(palavra)
+    while erro > 0:
+        print(cor.GREEN + f'\nVocê tem {erro} tentativas')
+        letra = input('Qual a letra da palavra: ').lower()
 
-while erro > 0:
-    print(f'\nVocê tem {erro} tentativas')
-    letra = input('Qual a letra da palavra: ').lower()
+        acertou = verificaTentativa(palavra, palavraEsc, letra)
+        
+        if (acertou!=True): 
+            print(cor. RED + '\nEssa letra não está na palavra\n')
+            erro -= 1
+        
+        venceu = comparaPalavra(palavra, palavraEsc)
+        
+        if venceu == True:
+            print(palavraEsc)
+            print( cor.GREEN + 'Você acertou a palavra, parabéns')
+            break
 
-    acertou = verificaTentativa(palavra, palavraEsc, letra)
-    
-    if (acertou!=True): 
-        print('\nEssa letra não está na palavra\n')
-        erro -= 1
-    
-    venceu = comparaPalavra(palavra, palavraEsc)
-    
-    if venceu == True:
         print(palavraEsc)
-        print('Você acertou a palavra, parabéns')
-        break
-
-    print(palavraEsc)
+        
+        if erro == 0: 
+            print(cor.RED + 'Suas tenativas acabaram, mais sorte na próxima vez')
+            break
     
-    if erro == 0: 
-        print('Suas tenativas acabaram, mais sorte na próxima vez')
+    jogar = input('Deseja jogar novamente?\nR:').lower()
+    if jogar != 'sim':
         break
 
-print('Fechando o programa, obrigado por jogar')
+print(cor.CYAN + '\nFechando o programa, obrigado por jogar')
